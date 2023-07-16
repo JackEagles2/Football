@@ -6,22 +6,26 @@ import pandas as pd
 
 class LeagueTable:
 
-    def __init__(self, tableUrl, fixturesUrl, resultsUrl):
+    def __init__(self, tableUrl):
         self.tableUrl = tableUrl
-        self.fixturesUrl = fixturesUrl
-        self.resultsUrl = resultsUrl
+        self.fixturesUrl = tableUrl.replace("view", "fixtures")
+        self.resultsUrl = tableUrl.replace("view", "results")
 
         self.league = self.getTable(self.tableUrl)
-        print(self.league)
-        self.points = 0
-        self.position = -1
-        self.goalsFor = 0
-        self.goalsAgainst = 0
-        self.wins = 0
-        self.loses = 0
-        self.draws = 0
+        # print(self.league)
+        row = self.league["Team"] == "Compsoc Greens"
+
+        greens = self.league[row]
+        print(greens)
+        self.points = greens["P"].iloc[0]
+        self.position = greens.index[0]
+        self.goalsFor = greens["GA"].iloc[0]
+        self.goalsAgainst = greens["GF"].iloc[0]
+        self.wins = greens["W"].iloc[0]
+        self.loses = greens["L"].iloc[0]
+        self.draws = greens["D"].iloc[0]
+        self.results = self.getResults(self.resultsUrl)
         self.fixtures = []
-        self.results = []
 
     def getTable(self, url):
         res = requests.get(url)
@@ -50,6 +54,53 @@ class LeagueTable:
                 print(f"Table with class not found.")
                 return None
 
+    def getResults(self, url):
+
+        res = requests.get(url)
+
+        if res.status_code == 200:
+            soup = BeautifulSoup(res.content, 'html.parser')
+
+            table = soup.find('table', class_="fixtures list hidden-xs")
+            tr_elements = table.find_all('tr', id='1306')
+
+            team_a_list = []
+            score_list = []
+            team_b_list = []
+            date = []
+            # Find all <tr> elements within the table
+            tr_elements = table.find_all('tr', id=True)
+
+            # Iterate through the <tr> elements to extract the required <td> elements
+            for tr in tr_elements:
+                prev_inner_header = tr.find_previous_sibling('tr', class_='inner-header')
+                header_text = prev_inner_header.text.strip() if prev_inner_header else None
+                date.append(header_text)
+
+                # Find the <td> elements with the specified class names
+                td_team_a = tr.find('td', class_='team-a no-width-truncate').text.strip()
+                td_scores = tr.find_all('td', class_='score')
+                td_team_b = tr.find('td', class_='team-b no-width-truncate').text.strip()
+
+                score1 = td_scores[0].text.strip()
+                score2 = td_scores[1].text.strip()
+                formatted_score = f"{score1} - {score2}"
+                # Append the data to the respective lists
+                team_a_list.append(td_team_a)
+                score_list.append(formatted_score)
+                team_b_list.append(td_team_b)
+
+                # Create a pandas DataFrame from the lists
+                df = pd.DataFrame({
+                    'Team A': team_a_list,
+                    'Score': score_list,
+                    'Team B': team_b_list,
+                    'Date' : date
+                })
+
+            # Display the DataFrame
+            return df
+
     def points(self):
         return self.points
 
@@ -74,6 +125,18 @@ class LeagueTable:
     def positions(self):
         return self.positions
 
-    
+    def __str__(self):
+        return (f"Points: {self.points}\n"
+                f"Position: {self.position}\n"
+                f"Goals For: {self.goalsFor}\n"
+                f"Goals Against: {self.goalsAgainst}\n"
+                f"Wins: {self.wins}\n"
+                f"Loses: {self.loses}\n"
+                f"Draws: {self.draws}\n"
+                f"Fixtures:\n {self.fixtures}\n"
+                f"Results: \n {self.results}")
 
-CompSoc = LeagueTable("https://sportsheffield.sportpad.net/leagues/view/1450/84", "", "")
+
+CompSoc = LeagueTable("https://sportsheffield.sportpad.net/leagues/view/1450/84")
+
+print(CompSoc)
