@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ce85b86-70a1-490b-b175-fc79404992ca" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/api/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/api/api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/webscraper/campus_leagues.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/webscraper/campus_leagues.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,6 +225,7 @@
       <workItem from="1689697137574" duration="192000" />
       <workItem from="1689699584301" duration="2835000" />
       <workItem from="1689702506604" duration="648000" />
+      <workItem from="1689714421001" duration="1148000" />
     </task>
     <servers />
   </component>
