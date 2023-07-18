@@ -23,7 +23,7 @@ def get_results(url):
         soup = BeautifulSoup(res.content, "html.parser")
 
         table = soup.find("table", class_="fixtures list hidden-xs")
-        tr_elements = table.find_all("tr", id="1306")
+        tr_elements = table.find_all("tr", id=True)
 
         team_a_list = []
         score_list = []
