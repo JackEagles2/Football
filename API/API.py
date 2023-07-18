@@ -1,6 +1,5 @@
 from flask import Flask, jsonify
 from Webscraper import CampusLeagues as cl
-import pandas
 
 # curl "http://127.0.0.1:5000/api/table" | jq to display in terminal
 CompSoc = cl.LeagueTable("https://sportsheffield.sportpad.net/leagues/view/1426/84", "CompSoc Greens")
